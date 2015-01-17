@@ -9,8 +9,12 @@
 
 namespace Application;
 
+require 'vendor/autoload.php';
+
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+
+use Parse\ParseClient;
 
 class Module
 {
@@ -19,6 +23,7 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        ParseClient::initialize('AxoLVEF1mgZLbYGRuTa27C7ltJGhEyk5BXENud7p', 'gszhLnkVLpRtdrYDatktxVHTrlx58CHmehdzseB4', 'WVMvTNcFaOFVRONl1sKDrzxoq8OWKEHnFPOHTQ4T');
     }
 
     public function getConfig()

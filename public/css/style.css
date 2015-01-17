@@ -35,3 +35,19 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+.username {
+	color: white;
+	float: right;
+	padding-top: 10px;
+	text-align: right;
+	
+}
+
+.main-header {
+	height: 64px;
+}
+
+.menu-text {
+	font-size: 18px;
+}
