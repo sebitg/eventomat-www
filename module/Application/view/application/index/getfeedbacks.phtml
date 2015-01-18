@@ -1,15 +1,12 @@
-<div class="jumbotron">
-	<h1 class="text-success">Welcome to Eventomat!</h1>
-	<p>This is the place where you manage your communities/events. Feel
-		free to use!</p>
-</div>
-
 <div class="row menu-text">
 	<div class="col-md-4">
 		<?php include('menu.html') ?>
 	</div>
-	<div class="col-md-8">
-		<ul class="list-group">
+	<div class="col-md-8 right-box">
+	
+		<p class="subpage-header">Feedback</p>
+	
+		<ul class="list-group" style="width: 90%;">
 		<?php
 			foreach($items as $i=>$v) {
 				echo '<li class="list-group-item"><b>'. $v->getAuthor() .'</b>: '.$v->getComment().'</li>';

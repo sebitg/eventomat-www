@@ -1,25 +1,29 @@
-<div class="jumbotron">
-	<h1 class="text-success">Welcome to Eventomat!</h1>
-	<p>This is the place where you manage your communities/events. Feel
-		free to use!</p>
-</div>
-
 <div class="row menu-text">
 	<div class="col-md-4">
 		<?php include('menu.html') ?>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-8 right-box">
 	
-	<?php	
-		$form->setAttribute ( 'action', '/application/index/addevent');
-		$form->prepare ();
+	<p class="subpage-header">Add event</p><br />
 	
-		echo $this->form ()->openTag ( $form );
-		echo $this->formRow ( $form->get ( 'eventName' ) ) . "<br />";
-		echo $this->formRow ( $form->get ( 'communityId' ) ) . "<br /><br />";
-		echo $this->formSubmit ( $form->get ( 'submit' ) ) . "<br />";
-		echo $this->form ()->closeTag ();
-	?>
+	<form method="POST" action="/application/index/addevent">
+			<div class="form-group">
+				<label for="email">Event name</label>
+				<input type="email" class="form-control" id="eventName" name="eventName" placeholder="Enter event name">
+			</div>
+			<div class="form-group">
+				<label for="password">Community ID</label><br />
+				<select id="communityId" name="communityId">
+					<?php 
+						foreach($communities as $i=>$v) {
+							echo'<option value="' . $v->getId() . '">'. $v->getName() . '</option>';
+						}
+					?>
+				</select>
+			</div>
+			<br />
+			<button type="submit" class="btn btn-default btn-lg">Submit</button>
+		</form>
 	
 	</div>
 </div>

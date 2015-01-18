@@ -1,6 +1,18 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
 body {
-    padding-top: 60px;
     padding-bottom: 40px;
+    background: url(../img/bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 52px;
+  color: #fff;
 }
 
 .zf-green {
@@ -39,7 +51,6 @@ div.container a.brand {
 .username {
 	color: white;
 	float: right;
-	padding-top: 10px;
 	text-align: right;
 	
 }
@@ -56,4 +67,78 @@ div.container a.brand {
 	height: 84px;
 	padding-top: 10px;
 	font-size: 18px;
+}
+
+.navbar-brand {
+	padding: 2px 20px;
+}
+
+.btn-evenomat {
+	background: #be1622;
+	color: #fff;
+	font-weight: 800;
+}
+
+#evtext {
+	display: none;
+}
+
+@media only screen and (max-width: 468px) {
+	#phone {
+		display: none;
+	}
+	
+	#evtext {
+		display: block;
+		color: #fff;
+		background: rgba(0,0,0,0.8);
+		border-radius: 20px;
+		padding: 10px;
+	}
+}
+
+.input-group-addon.danger {
+    color: rgb(255, 255, 255);
+    background-color: #be1622;
+    border-color: rgb(130, 30, 30);
+}
+
+.no-radius {
+	border-radius: 0px 0px 0px 0px;
+-moz-border-radius: 0px 0px 0px 0px;
+-webkit-border-radius: 0px 0px 0px 1px;
+border: 0px solid #000000;
+
+}
+
+.no-radius-paddings {
+	padding-top: 15px;
+padding-bottom: 15px;
+padding-left: 27px;
+}
+
+.notifications {
+	padding: 10px 10px 0px 10px;
+	font-size: 14px;
+}
+
+#notificationsLink {
+	padding-right: 17px;
+}
+
+.right-box {
+	background-color: #ffffff;
+	color: black;
+	min-height: 350px;
+}
+
+.subpage-header {
+	font-weight: bold; 
+	font-size: 40px;
+	padding-top: 13px;
+	padding-left: 0px;
+}
+
+.my-container {
+	width: 99%;
 }

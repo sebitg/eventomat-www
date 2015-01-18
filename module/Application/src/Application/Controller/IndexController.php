@@ -108,7 +108,8 @@ class IndexController extends AbstractActionController
     	$communities = $this->parseService->getCommunities();
     	$form->setCommunities($communities);
     	return array(
-    			'form' => $form
+    			'form' => $form,
+    			'communities' => $communities
     	);
     }
     
