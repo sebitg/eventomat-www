@@ -154,10 +154,9 @@ class IndexController extends AbstractActionController
     
     
     public function eventDetailsAction() {
-    	$request = $this->getRequest();
     	$event   = $this->getEvent();
     	$matches = $event->getRouteMatch();
-    	$eventId = $event->getRouteMatch()->getParam('id');
+    	$eventId = $matches->getParam('id');
     	
     	$event = $this->parseService->getEvent($eventId);
     	$schedules1 = $this->parseService->getSchedules("Friday");
