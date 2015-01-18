@@ -34,12 +34,15 @@
 		$(document).ready(function() {		//Parse listening for News entities every 2000s
 			$("#notificationsNumber").hide();
 			$("#notificationsBadge").hide();
+			$("#feedbacksBadge").hide();
 			var counter = sessionStorage.getItem("counter");
 			if(counter==null) {
 				counter = 0;
 				$("#notificationsNumber").hide();
 				$("#notificationsBadge").hide();
 			}
+
+			
 
 			var func = function() {
 				var query = new Parse.Query(NewsObject);
@@ -71,6 +74,21 @@
 				  }
 				})
 			};
+
+			var checkFeedbacks = function() {
+				var query = new Parse.Query(FeedbackObject);
+				query.descending("createdAt");
+				query.find({
+				  success: function(results) {
+				    if(results!=null && results.length>0) {
+				    	$("#feedbacksBadge").show().text(results.length);
+				    }
+				  },
+				  error: function(error) {
+				    console.log("Error: " + error.code + " " + error.message);
+				  }
+				})
+			}
 			
 			$("#notificationsLink").click(function() {
 				$("#notificationsNumber").hide();
@@ -82,8 +100,15 @@
 			
 			Parse.initialize('AxoLVEF1mgZLbYGRuTa27C7ltJGhEyk5BXENud7p', 'O6jg1gIpiuwMOeuDwT9ExhmuvimXZ8DTGNQPyQNa');
 			try {
+				
 				var NewsObject = Parse.Object.extend("News");
+				var FeedbackObject = Parse.Object.extend("Feedback");
+
+				func();
+				checkFeedbacks();
+				
 				setInterval(func, 1500);
+				setInterval(checkFeedbacks, 1000);
 			}
 			catch(err) {
 				console.log("Error while init of Parse JS" + err);

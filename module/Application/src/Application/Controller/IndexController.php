@@ -130,7 +130,44 @@ class IndexController extends AbstractActionController
     }
     
     public function notificationsAction() {
-    	return new ViewModel();
+    	$items = $this->parseService->getNews();
+    	return array(
+    		"items" => $items	
+    	);
+    }
+    
+    public function scheduleDeleteAction() {
+    	$event   = $this->getEvent();
+    	$matches = $event->getRouteMatch();
+    	$scheduleId = $event->getRouteMatch()->getParam('id');
+    	$items = $this->parseService->deleteSchedule($scheduleId);
+    	return $this->redirect()->toUrl("/application/index/loggedin?msg=schedule-deleted-success");
+    }
+    
+    public function getFeedbacksAction() {
+    	$items = $this->parseService->getFeedbacks();
+    	return array(
+    			"items" => $items
+    	);
+    }
+    
+    
+    public function eventDetailsAction() {
+    	$request = $this->getRequest();
+    	$event   = $this->getEvent();
+    	$matches = $event->getRouteMatch();
+    	$eventId = $event->getRouteMatch()->getParam('id');
+    	
+    	$event = $this->parseService->getEvent($eventId);
+    	$schedules1 = $this->parseService->getSchedules("Friday");
+    	$schedules2 = $this->parseService->getSchedules("Saturday");
+    	$schedules3 = $this->parseService->getSchedules("Sunday");
+    	return array(
+    			"event" => $event,
+    			"schedules1" => $schedules1,
+    			"schedules2" => $schedules2,
+    			"schedules3" => $schedules3,
+    	);
     }
 
 }

@@ -12,10 +12,10 @@
 		<ul class="list-group">
 		<?php
 			foreach($items as $i=>$v) {
-				echo '<li class="list-group-item">'. $v->getMessage() .'</li>';
+				echo '<li class="list-group-item"><b>'. $v->getAuthor() .'</b>: '.$v->getComment().'</li>';
 			}
 		?>
-		</ul>
+	</ul>
 	</div>
 </div>
 
