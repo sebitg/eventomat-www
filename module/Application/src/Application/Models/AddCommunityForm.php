@@ -14,7 +14,7 @@ class AddCommunityForm extends Form {
 				'type' => 'Hidden',
 		));
 		$this->add(array(
-				'name' => 'name',
+				'name' => 'commName',
 				'type' => 'Text',
 				'options' => array(
 						'label' => 'Community name',

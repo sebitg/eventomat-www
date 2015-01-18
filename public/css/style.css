@@ -51,3 +51,9 @@ div.container a.brand {
 .menu-text {
 	font-size: 18px;
 }
+
+.header-item {
+	height: 84px;
+	padding-top: 10px;
+	font-size: 18px;
+}

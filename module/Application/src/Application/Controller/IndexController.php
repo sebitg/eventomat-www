@@ -14,31 +14,29 @@ use Zend\View\Model\ViewModel;
 use Application\Services\ParseService;
 use Application\Models\AddCommunityForm;
 use Application\Models\AddEventForm;
+use Application\Models\Community;
+use Application\Models\Event;
 use Parse\ParseObject;
+use Parse\ParsePush;
 use Application\Models\LoginForm;
+
 
 
 class IndexController extends AbstractActionController
 {
+	
+	private $logger;
+	private $parseService;
+	
+	public function __construct() {
+		$this->parseService = new ParseService();
+	}
+	
     public function indexAction()
     {
-//     	$testObject = ParseObject::create("TestObject");
-//     	$testObject->set("foo", "bar");
-//     	$testObject->save();
-
-//     	$form  = new LoginForm();
-//     	$form->get('submit')->setAttribute('value', 'Log in');
-//     	$request = $this->getRequest();
-//     	if ($request->isPost()) {
-//     		$form->setData($request->getPost());
-//     		if ($form->isValid()) {
-//     			$_SESSION["username"] = $form->get("email");
-//     			return $this->redirect()->toUrl("/application/index/loggedin?msg=success");
-//     		}
-//     	}
-//     	return array(
-//     			'form' => $form,
-//     	);
+    	if($_SESSION["username"]!=null && $_SESSION["username"]!="") {
+    		return $this->redirect()->toUrl("/application/index/loggedin");
+    	}
     	$request = $this->getRequest();
     	if($request->isPost()) {
     		$_SESSION["username"] = $request->getPost('email');
@@ -55,41 +53,6 @@ class IndexController extends AbstractActionController
     		return new ViewModel();
     	}
     	return $this->redirect()->toUrl("/application/index/index?msg=logRequired");
-    	
-    	
-    	// Get the Album with the specified id.  An exception is thrown
-    	// if it cannot be found, in which case go to the index page.
-//     	try {
-//     		$album = $this->getAlbumTable()->getAlbum($id);
-//     	}
-//     	catch (\Exception $ex) {
-//     		return $this->redirect()->toRoute('album', array(
-//     				'action' => 'index'
-//     		));
-//     	}
-    	
-//     	$form  = new AlbumForm();
-//     	$form->bind($album);
-//     	$form->get('submit')->setAttribute('value', 'Edit');
-    	
-//     	$request = $this->getRequest();
-//     	if ($request->isPost()) {
-//     		$form->setInputFilter($album->getInputFilter());
-//     		$form->setData($request->getPost());
-    	
-//     		if ($form->isValid()) {
-//     			$this->getAlbumTable()->saveAlbum($album);
-    	
-//     			// Redirect to list of albums
-//     			return $this->redirect()->toRoute('album');
-//     		}
-//     	}
-    	
-//     	return array(
-//     			'id' => $id,
-//     			'form' => $form,
-//     	);
-    	
     }
     
     public function addCommunityAction() {
@@ -99,7 +62,13 @@ class IndexController extends AbstractActionController
     	if ($request->isPost()) {
     		$form->setData($request->getPost());
     		if ($form->isValid()) {
-    		    return $this->redirect()->toUrl("/application/index/loggedin?msg=success");
+    			
+    			//Using ParseService
+    			$communityObject = new Community(null, $request->getPost('commName'));
+    			$result = $this->parseService->addCommunity($communityObject);
+    			
+    		    return ($result) ? $this->redirect()->toUrl("/application/index/loggedin?msg=community-added") : 
+    		    		$this->redirect()->toUrl("/application/index/loggedin?msg=community-not-added");
     		}
   	  	}
     	return array(
@@ -108,7 +77,17 @@ class IndexController extends AbstractActionController
     }
     
     public function modifyCommunityAction() {
-    	
+    	$items = $this->parseService->getCommunities();
+    	return array(
+    		"items" => $items	
+    	);
+    }
+    
+    public function modifyEventsAction() {
+    	$items = $this->parseService->getEvents();
+    	return array(
+    			"items" => $items
+    	);
     }
     
     public function addEventAction() {
@@ -117,18 +96,41 @@ class IndexController extends AbstractActionController
     	$request = $this->getRequest();
     	if ($request->isPost()) {
     		$form->setData($request->getPost());
-    		if ($form->isValid()) {
-    			return $this->redirect()->toUrl("/application/index/loggedin?msg=success");
+    		//Using ParseService
+    		$community = $this->parseService->getCommunity($request->getPost('communityId'));
+    		if($community!=null) {
+    			$eventObject = new Event(null, $request->getPost('eventName'), $community);
+    			$result = $this->parseService->addEvent($eventObject);
+    			return $this->redirect()->toUrl("/application/index/loggedin?msg=event-add-success");
     		}
+    		return $this->redirect()->toUrl("/application/index/loggedin?msg=event-add-failure");
     	}
+    	$communities = $this->parseService->getCommunities();
+    	$form->setCommunities($communities);
     	return array(
-    			'form' => $form,
+    			'form' => $form
     	);
     }
     
     public function logoutAction() {
     	$_SESSION["username"] = null;
-    	return $this->redirect()->toUrl("/application/index/index?msg=loggedOut");
+    	return $this->redirect()->toUrl("/application/index/index?msg=logged-out");
+    }
+    
+    public function sendPushAction() {
+    	$request = $this->getRequest();
+    	if ($request->isPost()) {
+    		$message = $request->getPost('message');
+    		if($message!=null && $message!="") {
+    			$this->parseService->sendPushNotification($message);
+    			return $this->redirect()->toUrl("/application/index/loggedin?msg=push-success");
+    		}
+    	}
+    	return new ViewModel();
+    }
+    
+    public function notificationsAction() {
+    	return new ViewModel();
     }
 
 }

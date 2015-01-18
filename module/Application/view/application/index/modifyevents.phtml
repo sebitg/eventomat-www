@@ -9,17 +9,13 @@
 		<?php include('menu.html') ?>
 	</div>
 	<div class="col-md-8">
-	
-	<?php
-	$form->setAttribute ( 'action', '/application/index/addcommunity');
-	$form->prepare ();
-	
-	echo $this->form ()->openTag ( $form );
-	echo $this->formRow ( $form->get ( 'commName' ) );
-	echo $this->formSubmit ( $form->get ( 'submit' ) );
-	echo $this->form ()->closeTag ();
-	?>
-	
+		<ul class="list-group">
+		<?php
+			foreach($items as $i=>$v) {
+				echo '<li class="list-group-item">'. $v->getName() .'<span class="badge"><a href="/application/index/eventdetails/' . $v->getId() . '">Details</a></span><span class="badge">Delete</span></li>';
+			}
+		?>
+	</ul>
 	</div>
 </div>
 

@@ -8,6 +8,14 @@
 	<div class="col-md-4">
 		<?php include('menu.html') ?>
 	</div>
-	<div class="col-md-8">Select item from menu</div>
+	<div class="col-md-8">
+		<ul class="list-group">
+		<?php
+			foreach($items as $i=>$v) {
+				echo '<li class="list-group-item">'. $v->getName() .'<span class="badge">Delete</span></li>';
+			}
+		?>
+	</ul>
+	</div>
 </div>
 
